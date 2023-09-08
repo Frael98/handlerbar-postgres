@@ -1,0 +1,16 @@
+.go-down {
+  /* border: 2px solid; */
+  overflow: hidden;
+  transition: all cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  animation: go-down 2s;
+}
+
+@keyframes go-down {
+  from {
+    transform: translateY(-400px);
+  }
+
+  to {
+    transform: translateY(0px);
+  }
+}
