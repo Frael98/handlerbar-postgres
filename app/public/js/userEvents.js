@@ -1,11 +1,14 @@
-const toastTrigger = document.getElementById('btnSaveUser')
+const btnSaveUser = document.getElementById('btnSaveUser')
 const toastLiveExample = document.getElementById('liveToast')
+const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
 
 const nombre = document.getElementById('nombre')
 const apellido = document.getElementById('apellido')
 
 const formUser = document.getElementById('user-form')
 const mensajeToast = document.getElementById('mensaje')
+
+var ID = 0;
 
 document.addEventListener('DOMContentLoaded', async () => {
     Events();
@@ -14,12 +17,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 const Events = () => {
 
     // Guardar y mostrar Toast
-    if (toastTrigger) {
+    if (btnSaveUser) {
         //console.log('Lanzando toast!')
-        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-        toastTrigger.addEventListener('click', (ev) => {
+        btnSaveUser.addEventListener('click', (ev) => {
             ev.preventDefault();
-            guardarUsuario();
+            GuardarEditar();
             toastBootstrap.show()
             limpiarForm()
         })
@@ -29,7 +31,7 @@ const Events = () => {
 }
 
 
-const guardarUsuario = () => {
+const GuardarEditar = () => {
     const datos = new FormData(formUser)
     //console.log(datos)
     const datosObjeto = {};
@@ -37,6 +39,16 @@ const guardarUsuario = () => {
         datosObjeto[clave] = valor;
     }
     const Jdatos = (JSON.stringify(datosObjeto))
+
+    if (ID == 0) {
+        guardarUsuario(Jdatos)
+    }
+    else {
+        editarUsuario(Jdatos)
+    }
+}
+
+const guardarUsuario = (Jdatos) => {
     fetch('/createUser', {
         method: 'post',
         headers: {
@@ -52,32 +64,8 @@ const guardarUsuario = () => {
         catch(err => console.log(err))
 }
 
-const editarUsuario = async (id) => {
-    console.log(id)
-
-    setearDatosForm(id)
-    /* const datos = new FormData(formUser)
-    const datosObjeto = {};
-    for (const [clave, valor] of datos.entries()) {
-        datosObjeto[clave] = valor;
-    }
-    const Jdatos = (JSON.stringify(datosObjeto))
-
-    const res = await fetch(`/editUser/${id}`, {
-        method: 'PUT',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: (Jdatos)
-    })
-
-    const message = await res.json() */
-}
-
-const eliminarUsuario = async (id) => {
-    console.log(id)
-
-    const res = await fetch(`/deleteUser/${id}`, {
+const editarUsuario = async (Jdatos) => {
+    const res = await fetch(`/editUser/${ID}`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json"
@@ -86,10 +74,26 @@ const eliminarUsuario = async (id) => {
     })
 
     const message = await res.json()
+    mensajeToast.innerText = message.message
+}
+
+const eliminarUsuario = async (id) => {
+    console.log(id)
+
+    const res = await fetch(`/deleteUser/${id}`, {
+        method: 'DELETE',
+    })
+
+    const message = await res.json()
+    //console.log(message)
+    mensajeToast.innerText = message.message
+    toastBootstrap.show()
+
 }
 
 
 const setearDatosForm = (id) => {
+    ID = id;
     fetch(`/getUser/${id}`).then(
         res => { return res.json() }
     ).then(
@@ -104,4 +108,5 @@ const setearDatosForm = (id) => {
 const limpiarForm = () => {
     apellido.value = ''
     nombre.value = ''
+    ID = 0;
 }

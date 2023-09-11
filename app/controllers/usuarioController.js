@@ -17,6 +17,7 @@ const UsuarioController = {
     createUser: async (req, res) => {
 
         //const user = (JSON.stringify(req.body)) // Parseamos el objeto a json para enviarlo al fetch -> Cannot convert object to primitive value -> usado en action
+        console.log(req.body)
         const resultado = await o.crearUsuario(req.body);
         const json = await resultado.json();
 
@@ -24,15 +25,28 @@ const UsuarioController = {
         console.log(json)
 
         res.send({ message })
+        //res.redirect('/')
     },
 
     //
-    editUser: async () => {
+    editUser: async (req, res) => {
+        const id = req.params.id
+        const editUser = req.body
 
+        const message = await o.editUsuario(id, editUser)
+
+        /* console.log("Este es el id: ", id)
+        console.log("Este es el usuario: ")
+        console.log(req.body) */
+
+        res.send(message)
     },
 
-    deleteUser: async () => {
+    deleteUser: async (req, res) => {
+        const id = req.params.id;
+        const message = await o.deleteUsuario(id);
 
+        res.send(message)
     }
     ,
 

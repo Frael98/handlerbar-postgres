@@ -44,9 +44,9 @@ class PersonServices {
         return respo;
     }
 
-    async editUsuario(id, user){
+    async editUsuario(id, user) {
         const Juser = JSON.stringify(user)
-        const res = await fetch(`${this.URI}/edit-user/id=${id}`, {
+        const res = await fetch(`${this.URI}/edit-user/${id}`, {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json"
@@ -59,17 +59,18 @@ class PersonServices {
         return jsonRes
     }
 
-    async deleteUsuario(id){
-        const Juser = JSON.stringify(user)
-        const res = await fetch(`${this.URI}/delete-user/${id}`);
-
+    async deleteUsuario(id) {
+        const res = await fetch(`${this.URI}/delete-user/${id}`, {
+            method: 'DELETE'
+        });
         const jsonRes = await res.json()
-
+        console.log('Se elimino')
+        console.log(jsonRes)
         return jsonRes
     }
 
-    async getUsuario (id) {
-        
+    async getUsuario(id) {
+
         const res = await fetch(`${this.URI}/get-user/${id}`);
 
         return await res.json()

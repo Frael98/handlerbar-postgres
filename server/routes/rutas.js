@@ -1,4 +1,4 @@
-const { Router } = require('express')
+const { Router, response } = require('express')
 const router = Router();
 const Conexion = require('../db/conexion')
 
@@ -25,15 +25,15 @@ router.get('/get-user/:id', async (req, res) => {
 /**
  * Creacion de usuario
  */
-router.post('/crear-user', async (req, res) => {
+router.post('/crear-user', (req, res) => {
     //console.log('imprimiendo datos')
     //console.log(req.body)
     const { nombre, apellido, estado } = req.body
     console.log(nombre, apellido, estado)
     //Conexion.
-    Conexion.query(`insert into usuario(id_usuario, nombre, apellido, estado_civil) values('${nombre}', '${apellido}','${estado}');`).
-        then(res => {
-            console.log(res.oid)
+    Conexion.query(`insert into usuario(nombre, apellido, estado_civil) values('${nombre}', '${apellido}','${estado}');`).
+        then(response => {
+            console.log(response.oid)
         }).catch(e => {
             console.error(e);
         })
@@ -61,7 +61,7 @@ router.put('/edit-user/:id', async (req, res) => {
     Conexion.query(`UPDATE USUARIO SET NOMBRE='${nombre}', APELLIDO='${apellido}', ESTADO_CIVIL='${estado}'
         WHERE ID_USUARIO = ${id}
     `).then(response => {
-        res.send(response)
+        res.send({ message: "Usuario actualizado exitosamente!"})
     }).catch(error => {
         console.log(error)
     })
@@ -70,12 +70,14 @@ router.put('/edit-user/:id', async (req, res) => {
 /**
  * Delete User
  */
-router.delete('/delete-user/:id', async (req, res) => {
+router.delete('/delete-user/:id', (req, res) => {
     const id = req.params.id
 
     Conexion.query(`DELETE FROM USUARIO WHERE ID_USUARIO =  ${id}`)
-        .then(response =>
-            res.send(response.oid))
+        .then(response => {
+            console.log(response.rows)
+            res.send({ message: "Usuario eliminado exitosamente!" }) // Enviamos mensaje
+        })
         .catch(error =>
             console.log(error))
 })

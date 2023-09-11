@@ -20,8 +20,8 @@
                 <td> {{ apellido }}</td>
                 <td> {{ estado_civil }}</td>
                 {{!-- <i class="fa-duotone fa-pen-to-square fa-bounce"></i> --}}
-                <td id="btnEditUser" class="text-center editar" onclick="editarUsuario({{id_usuario}})"><i class="fa-regular fa-pen-to-square " style="color: #07a02d;"></i></td>
-                <td id="btnDeleteUser" class="text-center eliminar" onclick=""><i class="fa-solid fa-trash" style="color: #d30909;"></i></td>
+                <td id="btnEditUser" class="text-center editar" onclick="setearDatosForm({{id_usuario}})"><i class="fa-regular fa-pen-to-square " style="color: #07a02d;"></i></td>
+                <td id="btnDeleteUser" class="text-center eliminar" onclick="eliminarUsuario({{id_usuario}})"><i class="fa-solid fa-trash" style="color: #d30909;"></i></td>
             </tr>
             {{/each}}
         </tbody>
