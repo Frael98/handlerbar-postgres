@@ -7,7 +7,7 @@ class PersonServices {
         this.URI = `http://localhost:19000/api-rest`;
     }
 
-    // con promesas
+    // Promesas
     crearUsuario(user) {
         /* console.log("usuario es ")
         console.log(typeof user) */
@@ -42,6 +42,37 @@ class PersonServices {
         });
         const respo = (await res.json())
         return respo;
+    }
+
+    async editUsuario(id, user){
+        const Juser = JSON.stringify(user)
+        const res = await fetch(`${this.URI}/edit-user/id=${id}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: Juser
+        });
+
+        const jsonRes = await res.json()
+
+        return jsonRes
+    }
+
+    async deleteUsuario(id){
+        const Juser = JSON.stringify(user)
+        const res = await fetch(`${this.URI}/delete-user/${id}`);
+
+        const jsonRes = await res.json()
+
+        return jsonRes
+    }
+
+    async getUsuario (id) {
+        
+        const res = await fetch(`${this.URI}/get-user/${id}`);
+
+        return await res.json()
     }
 }
 

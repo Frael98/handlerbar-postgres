@@ -7,7 +7,6 @@ const UsuarioController = {
     index: async (req, res) => {
         const usuarios = await o.getUsuarios();
         //const resultado = req?.query?.resultado
-        /* console.log(usuarios) */ // se imprime en consola del  servidor
         res.render('index', { usuarios })
     },
     explore: (req, res) => {
@@ -25,6 +24,25 @@ const UsuarioController = {
         console.log(json)
 
         res.send({ message })
+    },
+
+    //
+    editUser: async () => {
+
+    },
+
+    deleteUser: async () => {
+
+    }
+    ,
+
+    //
+    getUser: async (req, res) => {
+        const id = req.params.id;
+
+        const usuario = await o.getUsuario(id);
+
+        res.send(usuario)
     }
 
 }

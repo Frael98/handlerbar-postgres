@@ -1,4 +1,4 @@
-const toastTrigger = document.getElementById('liveToastBtn')
+const toastTrigger = document.getElementById('btnSaveUser')
 const toastLiveExample = document.getElementById('liveToast')
 
 const nombre = document.getElementById('nombre')
@@ -13,29 +13,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 const Events = () => {
 
+    // Guardar y mostrar Toast
     if (toastTrigger) {
         //console.log('Lanzando toast!')
         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-        toastTrigger.addEventListener('click', async (ev) => {
-            /* resetearForm(); */
+        toastTrigger.addEventListener('click', (ev) => {
             ev.preventDefault();
-            guardar();
+            guardarUsuario();
             toastBootstrap.show()
-            resetearForm()
+            limpiarForm()
         })
 
     }
 
-
 }
 
 
-const resetearForm = () => {
-    apellido.value = ''
-    nombre.value = ''
-}
-
-const guardar = () => {
+const guardarUsuario = () => {
     const datos = new FormData(formUser)
     //console.log(datos)
     const datosObjeto = {};
@@ -56,4 +50,58 @@ const guardar = () => {
             mensajeToast.innerText = message.message
         ).
         catch(err => console.log(err))
+}
+
+const editarUsuario = async (id) => {
+    console.log(id)
+
+    setearDatosForm(id)
+    /* const datos = new FormData(formUser)
+    const datosObjeto = {};
+    for (const [clave, valor] of datos.entries()) {
+        datosObjeto[clave] = valor;
+    }
+    const Jdatos = (JSON.stringify(datosObjeto))
+
+    const res = await fetch(`/editUser/${id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: (Jdatos)
+    })
+
+    const message = await res.json() */
+}
+
+const eliminarUsuario = async (id) => {
+    console.log(id)
+
+    const res = await fetch(`/deleteUser/${id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: (Jdatos)
+    })
+
+    const message = await res.json()
+}
+
+
+const setearDatosForm = (id) => {
+    fetch(`/getUser/${id}`).then(
+        res => { return res.json() }
+    ).then(
+        data => {
+            console.log(data)
+            nombre.value = data[0].nombre
+            apellido.value = data[0].apellido
+        }
+    )
+}
+
+const limpiarForm = () => {
+    apellido.value = ''
+    nombre.value = ''
 }
