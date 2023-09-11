@@ -5,7 +5,6 @@ const Conexion = require('../db/conexion')
 /**
  * API Rest
  */
-
 router.get('/get-user', (req, res) => {
 
 })
@@ -14,9 +13,12 @@ router.get('/get-user', (req, res) => {
  * Creacion de usuario
  */
 router.post('/crear-user', async (req, res) => {
-    console.log(req.body)
+    //console.log('imprimiendo datos')
+    //console.log(req.body)
+
     const { nombre, apellido, estado } = req.body
     console.log(nombre, apellido, estado)
+    //Conexion.
     /* Conexion.query(`insert into usuario(id_usuario, nombre, apellido, estado_civil) values('${name}', '${lastname}','${estado}');`).
         then(res => {
             console.log(res.oid)
@@ -24,7 +26,7 @@ router.post('/crear-user', async (req, res) => {
             console.error(e);
         })
      */
-    res.json({ message: "usuario guardado" })
+    return res.json({ message: "Usuario guardado correctamente" })
 })
 
 /**
